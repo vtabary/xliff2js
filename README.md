@@ -2,6 +2,10 @@
 
 Tools to manipulate XLIFF contents.
 
+https://travis-ci.org/vtabary/xliff2js.svg?branch=master
+
+[![Build Status](https://travis-ci.org/vtabary/xliff2js.svg?branch=master)](https://travis-ci.org/vtabary/xliff2js)
+
 ## Installation
 
 ```sh
