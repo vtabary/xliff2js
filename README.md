@@ -1,0 +1,71 @@
+# @vtabary/xliff2js
+
+Tools to manipulate XLIFF contents.
+
+## Installation
+
+```sh
+# Use npm
+npm install @vtabary/xliff2js
+
+# Or use yarn
+yarn add @vtabary/xliff2js
+```
+
+## Class: XliffParser
+
+Converts a XLIFF string into a JSON object.
+
+### Usage
+
+```js
+var XliffParser = require('xliff2js').XliffParser;
+var obj = new XliffParser().parse('</root><root>');
+console.log(JSON.stringify(obj, undefined, 2));
+
+// displays :
+// { name: 'root', '$': {}, children: [] }
+```
+
+### constructor()
+
+#### Options
+
+No option available.
+
+### #parse(xml: string): IXliffTag
+
+#### Options
+
+* `xml` an XLIFF valid as a string
+
+## Class: XliffBuilder
+
+Converts a JSON object to XLIFF string.
+
+### Usage
+
+```js
+var XliffBuilder = require('xliff2js').XliffBuilder;
+var str = new XliffBuilder({ pretty: true }).build({
+  name: 'root',
+  $: {},
+  children: []
+});
+console.log(str);
+
+// displays :
+// '<?xml version="1.0"?><root/>'
+```
+
+### constructor(options)
+
+#### Options
+
+* `pretty` indents tags in result. Default: false.
+
+### #build(object: IXliffTag): string
+
+#### Options
+
+* `object` a JSON object matching

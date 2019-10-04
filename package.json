@@ -1,0 +1,40 @@
+{
+  "name": "xliff2js",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "prebuild": "rimraf ./dist",
+    "build": "tsc",
+    "test": "ts-node node_modules/jasmine/bin/jasmine"
+  },
+  "keywords": [
+    "xliff"
+  ],
+  "author": "Vincent Tabary",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vtabary/xliff2js"
+  },
+  "homepage": "https://github.com/vtabary/xliff2js",
+  "license": "ISC",
+  "dependencies": {
+    "sax": "^1.2.4",
+    "xmlbuilder": "^13.0.2"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^3.4.2",
+    "@types/node": "^12.7.11",
+    "@types/sax": "^1.2.0",
+    "jasmine": "^3.5.0",
+    "rimraf": "^3.0.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  },
+  "files": [
+    "README.md",
+    "dist",
+    "CHANGELOG.md"
+  ]
+}
