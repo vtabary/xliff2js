@@ -1,7 +1,7 @@
 {
   "name": "@vtabary/xliff2js",
   "version": "0.1.0",
-  "description": "",
+  "description": "Tools to manipulate XLIFF contents.",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -13,6 +13,7 @@
     "xliff"
   ],
   "author": "Vincent Tabary",
+  "private": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/vtabary/xliff2js"

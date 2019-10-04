@@ -1,11 +1,11 @@
 import * as sax from 'sax';
-import { IXliffTag } from '../models/xliff';
+import { IXliffTag, IXliff, XliffTagName } from '../models/xliff';
 
 export class XliffParser {
   private rootTag?: IXliffTag;
   private stack: IXliffTag[] = [];
 
-  public parse(data: string | undefined): IXliffTag | undefined {
+  public parse(data: string | undefined): IXliff | undefined {
     if (!data) {
       return undefined;
     }
@@ -30,7 +30,7 @@ export class XliffParser {
   }
 
   private onOpenTag(node: sax.Tag | sax.QualifiedTag) {
-    const current = this.newTag(node.name);
+    const current = this.newTag(node.name as XliffTagName);
 
     Object.keys(node.attributes).forEach(key => {
       current.$[key] = typeof node.attributes[key] === 'string' ?
@@ -59,7 +59,7 @@ export class XliffParser {
     this.stack[0].children.push(text);
   }
 
-  private newTag(name: string): IXliffTag {
+  private newTag(name: XliffTagName): IXliffTag {
     return { name: name, $: {}, children: [] };
   }
 }
