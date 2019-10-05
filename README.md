@@ -35,7 +35,7 @@ console.log(JSON.stringify(obj, undefined, 2));
 
 No option available.
 
-### #parse(xml: string): IXliffTag
+### #parse(xml: string): IXliff
 
 #### Options
 
@@ -50,14 +50,14 @@ Converts a JSON object to XLIFF string.
 ```js
 var XliffBuilder = require('xliff2js').XliffBuilder;
 var str = new XliffBuilder({ pretty: true }).build({
-  name: 'root',
+  name: 'xliff',
   $: {},
   children: []
 });
 console.log(str);
 
 // displays :
-// '<?xml version="1.0"?><root/>'
+// '<?xml version="1.0"?><xliff/>'
 ```
 
 ### constructor(options)
@@ -66,7 +66,7 @@ console.log(str);
 
 * `pretty` indents tags in result. Default: false.
 
-### #build(object: IXliffTag): string
+### #build(object: IXliff): string
 
 #### Options
 
