@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [0.1.0]
+## [0.2.0] - 05/09/2019
+### Added
+- Add a interface IXliff to describe the xliff file structure
+
+## [0.1.0] - 04/09/2019
 ### Added
 - Add the XliffParser class
 - Add the XliffBuilder class
