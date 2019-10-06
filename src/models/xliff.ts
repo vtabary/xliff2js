@@ -8,11 +8,18 @@ export interface IXliffTag {
 
 export interface IXliffInterpolation extends IXliffTag {
   name: 'x';
+  $: {
+    'equiv-text'?: string;
+    id?: 'INTERPOLATION';
+  }
 }
 
 export interface IXliffTarget extends IXliffTag {
   name: 'target';
   children: (string | IXliffInterpolation)[];
+  $: {
+    state?: 'translated';
+  }
 }
 
 export interface IXliffSource extends IXliffTag {
@@ -23,6 +30,10 @@ export interface IXliffSource extends IXliffTag {
 export interface IXliffNote extends IXliffTag {
   name: 'note';
   children: string[];
+  $: {
+    from?: 'from';
+    priority?: string;
+  }
 }
 
 export interface IXliffContext extends IXliffTag {
@@ -43,7 +54,7 @@ export interface IXliffContextGroup extends IXliffTag {
 
 export interface IXliffTransUnit extends IXliffTag {
   name: 'trans-unit';
-  children: (IXliffSource | IXliffTarget | IXliffContextGroup)[];
+  children: (IXliffSource | IXliffTarget | IXliffContextGroup | IXliffNote)[];
   $: {
     id: string;
     datatype?: string;

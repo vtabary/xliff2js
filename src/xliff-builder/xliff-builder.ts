@@ -3,7 +3,7 @@ import { IXliffTag, IXliff } from '../models/xliff';
 
 export class XliffBuilder {
   constructor(
-    private options: { pretty?: true } = {}
+    private options: { pretty?: boolean } = {}
   ) {}
 
   public build(rootTag: IXliff | undefined): string {

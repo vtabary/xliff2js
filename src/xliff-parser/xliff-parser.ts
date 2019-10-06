@@ -60,6 +60,6 @@ export class XliffParser {
   }
 
   private newTag(name: XliffTagName): IXliffTag {
-    return { name: name, $: {}, children: [] };
+    return { name: name.toLowerCase() as XliffTagName, $: {}, children: [] };
   }
 }
