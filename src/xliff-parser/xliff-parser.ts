@@ -19,9 +19,11 @@ export class XliffParser {
     return this.rootTag;
   }
 
-  private getParser(): any {
+  private getParser(): sax.SAXParser {
     const parser = sax.parser(true);
-    parser.onerror = (e) => { throw(e) };
+    parser.onerror = (e) => {
+      throw e;
+    };
     parser.ontext = (t) => this.onText(t);
     parser.onopentag = (node) => this.onOpenTag(node);
     parser.onclosetag = () => this.onCloseTag();
@@ -32,10 +34,11 @@ export class XliffParser {
   private onOpenTag(node: sax.Tag | sax.QualifiedTag) {
     const current = this.newTag(node.name as XliffTagName);
 
-    Object.keys(node.attributes).forEach(key => {
-      current.$[key] = typeof node.attributes[key] === 'string' ?
-        node.attributes[key] as string :
-        (node.attributes[key] as sax.QualifiedAttribute).value;
+    Object.keys(node.attributes).forEach((key) => {
+      current.$[key] =
+        typeof node.attributes[key] === 'string'
+          ? (node.attributes[key] as string)
+          : (node.attributes[key] as sax.QualifiedAttribute).value;
     });
 
     if (this.stack[0]) {

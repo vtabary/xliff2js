@@ -11,7 +11,7 @@ export class XliffBuilder {
 
     const element = xmlBuilder.create(rootTag.name);
     Object.keys(rootTag.$).forEach((key) =>
-      element.attribute(key, (rootTag.$ as any)[key])
+      element.attribute(key, (rootTag.$ as Record<string, unknown>)[key])
     );
 
     rootTag.children.forEach((child) =>
