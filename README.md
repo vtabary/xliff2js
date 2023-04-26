@@ -2,7 +2,9 @@
 
 Tools to manipulate XLIFF contents.
 
-[![Build Status](https://travis-ci.org/vtabary/xliff2js.svg?branch=master)](https://travis-ci.org/vtabary/xliff2js)
+![Build Status](https://github.com/vtabary/xliff2js/actions/workflows/test.yml/badge.svg)
+![NPMJS version](https://img.shields.io/npm/v/@vtabary/xliff2js)
+![NPMJS downloads](https://img.shields.io/npm/dm/@vtabary/xliff2js)
 
 ## Installation
 
