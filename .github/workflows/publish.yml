@@ -13,12 +13,26 @@ jobs:
         name: Checkout [main]
         with:
           fetch-depth: 0
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-node18-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node18-yarn-
+
       - uses: actions/setup-node@v3
         name: Setup Node
         with:
           node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
       - run: yarn install
       - run: yarn test
       - run: npm publish
         env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
