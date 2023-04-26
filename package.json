@@ -7,7 +7,10 @@
   "scripts": {
     "prebuild": "rimraf ./dist",
     "build": "tsc",
-    "test": "ts-node node_modules/jasmine/bin/jasmine"
+    "test": "ts-node node_modules/jasmine/bin/jasmine",
+    "preversion": "keepachangelog display unreleased && keepachangelog confirm $npm_new_version --current-version $npm_old_version",
+    "version": "keepachangelog release $npm_new_version && git add ./CHANGELOG.md",
+    "postversion": "git push origin HEAD && git push origin v$npm_new_version"
   },
   "keywords": [
     "xliff"
@@ -28,6 +31,7 @@
     "@types/jasmine": "^3.4.2",
     "@types/node": "^12.7.11",
     "@types/sax": "^1.2.0",
+    "@vtabary/keepachangelog-cli": "^0.4.0",
     "jasmine": "^3.5.0",
     "rimraf": "^3.0.0",
     "ts-node": "^8.4.1",
