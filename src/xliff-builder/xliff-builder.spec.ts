@@ -19,113 +19,117 @@ describe('XliffBuilder', () => {
     });
 
     it('should build a simple xml', () => {
-      expect(builder.build({
-        name: 'xliff',
-        children: [],
-        $: {},
-      })).toEqual('<?xml version="1.0"?><xliff/>');
+      expect(
+        builder.build({
+          name: 'xliff',
+          children: [],
+          $: {},
+        })
+      ).toEqual('<?xml version="1.0"?><xliff/>');
     });
 
     it('should build a regular xml', () => {
-      expect(builder.build({
-        name: 'xliff',
-        children: [
-          {
-            name: 'file',
-            $: {
-              "source-language": "en",
-            },
-            children: [
-              {
-                name: 'body',
-                $: {},
-                children: [],
-              }
-            ],
-          },
-          {
-            name: 'file',
-            $: {},
-            children: [
-              {
-                name: 'body',
-                $: {},
-                children: [
-                  {
-                    name: 'trans-unit',
-                    $: {
-                      id: 'abcd',
-                    },
-                    children: [
-                      {
-                        name: 'source',
-                        $: {},
-                        children: [
-                          'test-content',
-                        ],
-                      },
-                    ],
-                  },
-                ],
+      expect(
+        builder.build({
+          name: 'xliff',
+          children: [
+            {
+              name: 'file',
+              $: {
+                'source-language': 'en',
               },
-            ],
+              children: [
+                {
+                  name: 'body',
+                  $: {},
+                  children: [],
+                },
+              ],
+            },
+            {
+              name: 'file',
+              $: {},
+              children: [
+                {
+                  name: 'body',
+                  $: {},
+                  children: [
+                    {
+                      name: 'trans-unit',
+                      $: {
+                        id: 'abcd',
+                      },
+                      children: [
+                        {
+                          name: 'source',
+                          $: {},
+                          children: ['test-content'],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          $: {
+            version: '1.0',
           },
-        ],
-        $: {
-          version: '1.0'
-        },
-      })).toEqual('<?xml version="1.0"?><xliff version="1.0"><file source-language="en"><body/></file><file><body><trans-unit id="abcd"><source>test-content</source></trans-unit></body></file></xliff>');
+        })
+      ).toEqual(
+        '<?xml version="1.0"?><xliff version="1.0"><file source-language="en"><body/></file><file><body><trans-unit id="abcd"><source>test-content</source></trans-unit></body></file></xliff>'
+      );
     });
 
     it('should build a regular xml', () => {
-      expect(new XliffBuilder({ pretty: true }).build({
-        name: 'xliff',
-        children: [
-          {
-            name: 'file',
-            $: {
-              "source-language": "en",
-            },
-            children: [
-              {
-                name: 'body',
-                $: {},
-                children: [],
-              }
-            ],
-          },
-          {
-            name: 'file',
-            $: {},
-            children: [
-              {
-                name: 'body',
-                $: {},
-                children: [
-                  {
-                    name: 'trans-unit',
-                    $: {
-                      id: 'abcd',
-                    },
-                    children: [
-                      {
-                        name: 'source',
-                        $: {},
-                        children: [
-                          'test-content',
-                        ],
-                      },
-                    ],
-                  },
-                ],
+      expect(
+        new XliffBuilder({ pretty: true }).build({
+          name: 'xliff',
+          children: [
+            {
+              name: 'file',
+              $: {
+                'source-language': 'en',
               },
-            ],
+              children: [
+                {
+                  name: 'body',
+                  $: {},
+                  children: [],
+                },
+              ],
+            },
+            {
+              name: 'file',
+              $: {},
+              children: [
+                {
+                  name: 'body',
+                  $: {},
+                  children: [
+                    {
+                      name: 'trans-unit',
+                      $: {
+                        id: 'abcd',
+                      },
+                      children: [
+                        {
+                          name: 'source',
+                          $: {},
+                          children: ['test-content'],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          $: {
+            version: '1.0',
           },
-        ],
-        $: {
-          version: '1.0'
-        },
-      })).toEqual(`<?xml version="1.0"?>
+        })
+      ).toEqual(`<?xml version="1.0"?>
 <xliff version="1.0">
   <file source-language="en">
     <body/>
@@ -138,6 +142,141 @@ describe('XliffBuilder', () => {
     </body>
   </file>
 </xliff>`);
+    });
+
+    it('should use default options when no option given', () => {
+      expect(
+        new XliffBuilder().build({
+          name: 'xliff',
+          children: [
+            {
+              name: 'file',
+              $: {
+                'source-language': 'en',
+              },
+              children: [
+                {
+                  name: 'body',
+                  $: {},
+                  children: [],
+                },
+              ],
+            },
+            {
+              name: 'file',
+              $: {},
+              children: [
+                {
+                  name: 'body',
+                  $: {},
+                  children: [
+                    {
+                      name: 'trans-unit',
+                      $: {
+                        id: 'abcd',
+                      },
+                      children: [
+                        {
+                          name: 'source',
+                          $: {},
+                          children: ['test-content'],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          $: {
+            version: '1.0',
+          },
+        })
+      ).toEqual(
+        `<?xml version="1.0"?><xliff version="1.0"><file source-language="en"><body/></file><file><body><trans-unit id="abcd"><source>test-content</source></trans-unit></body></file></xliff>`
+      );
+    });
+    it('should use options given in input', () => {
+      expect(
+        new XliffBuilder({
+          allowEmpty: true,
+          dontPrettyTextNodes: true,
+          indent: ' ',
+          newline: '\n\n',
+          offset: 1,
+          pretty: true,
+          spaceBeforeSlash: ' ',
+        }).build({
+          name: 'xliff',
+          children: [
+            {
+              name: 'file',
+              $: {
+                'source-language': 'en',
+              },
+              children: [
+                {
+                  name: 'body',
+                  $: {},
+                  children: [],
+                },
+              ],
+            },
+            {
+              name: 'file',
+              $: {},
+              children: [
+                {
+                  name: 'body',
+                  $: {},
+                  children: [
+                    {
+                      name: 'trans-unit',
+                      $: {
+                        id: 'abcd',
+                      },
+                      children: [
+                        {
+                          name: 'source',
+                          $: {},
+                          children: ['test-content'],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          $: {
+            version: '1.0',
+          },
+        })
+      ).toEqual(` <?xml version="1.0" ?>
+
+ <xliff version="1.0">
+
+  <file source-language="en">
+
+   <body></body>
+
+  </file>
+
+  <file>
+
+   <body>
+
+    <trans-unit id="abcd">
+
+     <source>test-content</source>
+
+    </trans-unit>
+
+   </body>
+
+  </file>
+
+ </xliff>`);
     });
   });
 });

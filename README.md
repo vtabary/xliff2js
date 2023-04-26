@@ -39,7 +39,7 @@ No option available.
 
 #### Options
 
-* `xml` an XLIFF valid as a string
+- `xml` an XLIFF valid as a string
 
 ## Class: XliffBuilder
 
@@ -52,7 +52,7 @@ var XliffBuilder = require('xliff2js').XliffBuilder;
 var str = new XliffBuilder({ pretty: true }).build({
   name: 'xliff',
   $: {},
-  children: []
+  children: [],
 });
 console.log(str);
 
@@ -64,10 +64,18 @@ console.log(str);
 
 #### Options
 
-* `pretty` indents tags in result. Default: false.
+- `pretty` pretty prints the result. Default: false
+- `indent` indentation string. Default: ' '
+- `newline` newline sequence. Default: '\n'
+- `offset` a fixed number of indentations to add to every line. Default: 0
+- `width` maximum column width. Default: 0
+- `allowEmpty` do not self close empty element tags. Default: false
+- `dontPrettyTextNodes` if any text is present in node, don't indent or LF. Default: false
+- `spaceBeforeSlash` add a space before the closing slash of empty elements. Default: ''
+- `writer` the default XML writer to use for converting nodes to string. Default: the built-in XMLStringWriter
 
 ### #build(object: IXliff): string
 
 #### Options
 
-* `object` a JSON object matching
+- `object` a JSON object matching
