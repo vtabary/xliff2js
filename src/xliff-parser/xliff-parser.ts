@@ -1,68 +1,106 @@
-import * as sax from 'sax';
+import { ValidationError, XMLParser, XMLValidator } from 'fast-xml-parser';
 import { IXliffTag, IXliff, XliffTagName } from '../models/xliff';
 
+interface IXMLParserTextNode {
+  '#text': string;
+}
+
+interface IXMLParserAttributes {
+  ':@'?: {
+    [attributeName: string]: string;
+  };
+}
+
+type IXMLParserChild = IXMLParserAttributes & {
+  [tagName: string]:
+    | (IXMLParserChild | IXMLParserTextNode)[]
+    | {
+        [attributeName: string]: string;
+      }
+    | string;
+};
+
+type IXMLParserResult = IXMLParserChild[];
+
 export class XliffParser {
-  private rootTag?: IXliffTag;
-  private stack: IXliffTag[] = [];
+  private tagNames = [
+    'x',
+    'text',
+    'target',
+    'source',
+    'note',
+    'trans-unit',
+    'body',
+    'context',
+    'context-group',
+    'file',
+    'xliff',
+  ];
 
   public parse(data: string | undefined): IXliff | undefined {
     if (!data) {
       return undefined;
     }
 
-    this.rootTag = undefined;
-    this.stack = [];
+    const validation = this.isValidXML(data);
+    if (validation !== true) {
+      throw validation.err;
+    }
 
     const parser = this.getParser();
-    parser.write(data).close();
+    const parsedXML: IXMLParserResult = parser.parse(data);
 
-    return this.rootTag;
+    return this.convertNodes(parsedXML)[0] as any;
   }
 
-  private getParser(): sax.SAXParser {
-    const parser = sax.parser(true);
-    parser.onerror = (e) => {
-      throw e;
-    };
-    parser.ontext = (t) => this.onText(t);
-    parser.onopentag = (node) => this.onOpenTag(node);
-    parser.onclosetag = () => this.onCloseTag();
-
-    return parser;
-  }
-
-  private onOpenTag(node: sax.Tag | sax.QualifiedTag) {
-    const current = this.newTag(node.name as XliffTagName);
-
-    Object.keys(node.attributes).forEach((key) => {
-      current.$[key] =
-        typeof node.attributes[key] === 'string'
-          ? (node.attributes[key] as string)
-          : (node.attributes[key] as sax.QualifiedAttribute).value;
+  private getParser(): XMLParser {
+    return new XMLParser({
+      alwaysCreateTextNode: true,
+      preserveOrder: true,
+      ignoreAttributes: false,
+      attributeNamePrefix: '',
+      allowBooleanAttributes: true,
     });
+  }
 
-    if (this.stack[0]) {
-      this.stack[0].children.push(current);
-    } else {
-      this.rootTag = current;
+  private isValidXML(data: string): true | ValidationError {
+    return XMLValidator.validate(data, {
+      allowBooleanAttributes: true,
+    });
+  }
+
+  private convertNodes(nodes: IXMLParserResult): IXliffTag[] {
+    return nodes
+      .map((node) => {
+        return this.convertNode(node);
+      })
+      .filter((node): node is IXliffTag => !!node);
+  }
+
+  private convertNode(node: IXMLParserChild): IXliffTag | string | undefined {
+    const keys = Object.keys(node).filter((key) => key !== ':@');
+    const tagName = keys[0]?.toLowerCase();
+
+    if (tagName === '#text') {
+      return node['#text'] as string;
     }
 
-    this.stack.unshift(current);
-  }
-
-  private onCloseTag() {
-    this.stack.shift();
-  }
-
-  private onText(text: string) {
-    if (!text.trim()) {
-      return;
+    if (!this.isValidTagName(tagName)) {
+      return undefined;
     }
 
-    this.stack[0].children.push(text);
+    return {
+      $: node[':@'] ?? {},
+      children: this.convertNodes(node[tagName] as IXMLParserChild[]),
+      name: tagName,
+    };
   }
 
-  private newTag(name: XliffTagName): IXliffTag {
-    return { name: name.toLowerCase() as XliffTagName, $: {}, children: [] };
+  private isValidTagName(tagName: string): tagName is XliffTagName {
+    return this.tagNames.includes(tagName.replace('#', ''));
+  }
+
+  private getAttributes(tagName: string): tagName is XliffTagName {
+    return this.tagNames.includes(tagName.replace('#', ''));
   }
 }
