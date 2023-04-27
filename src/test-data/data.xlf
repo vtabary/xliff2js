@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file datatype="plaintext" original="ng2.template" source-language="en">
+    <body>
+      <trans-unit datatype="html" id="history.recent-files">
+        <source>
+          Recent files (
+          <x equiv-text="{{ filePaths.length }}" id="INTERPOLATION"/>
+          items)
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/history/history.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note from="description" priority="1">Recent files title</note>
+      </trans-unit>
+      <trans-unit datatype="html" id="history.empty-list">
+        <source>No opened file yet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/components/history/history.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note from="description" priority="1">Default label when no file is in the history</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

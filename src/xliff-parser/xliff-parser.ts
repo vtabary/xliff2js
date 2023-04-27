@@ -99,8 +99,4 @@ export class XliffParser {
   private isValidTagName(tagName: string): tagName is XliffTagName {
     return this.tagNames.includes(tagName.replace('#', ''));
   }
-
-  private getAttributes(tagName: string): tagName is XliffTagName {
-    return this.tagNames.includes(tagName.replace('#', ''));
-  }
 }

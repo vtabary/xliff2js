@@ -39,7 +39,7 @@ export class XliffBuilder {
     const element = parent.ele(tag.name, tag.$);
 
     tag.children.forEach((child) => {
-      if (typeof child === 'string') {
+      if (typeof child === 'string' || typeof child === 'number') {
         return element.text(child);
       }
 
