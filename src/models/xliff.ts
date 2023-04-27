@@ -53,7 +53,9 @@ export interface IXliffSource extends IXliffTag {
   children: (string | IXliffInterpolation | IXliffPlural)[];
 }
 
-export interface IXliffTarget extends IXliffSource {
+export interface IXliffTarget extends IXliffTag {
+  name: 'target';
+  children: (string | IXliffInterpolation | IXliffPlural)[];
   $: {
     state?: 'translated';
   };
