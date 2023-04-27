@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Use fast-xml-parser instead of sax
+
 ## [0.3.1] - 2023-04-27
 
 ### Fixed

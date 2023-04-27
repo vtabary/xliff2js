@@ -1,4 +1,7 @@
+import { readFileSync } from 'fs';
+import { XLIFF_JSON } from '../test-data/data';
 import { XliffBuilder } from './xliff-builder';
+import { resolve } from 'path';
 
 describe('XliffBuilder', () => {
   let builder: XliffBuilder;
@@ -9,7 +12,7 @@ describe('XliffBuilder', () => {
     });
   });
 
-  describe('#parse', () => {
+  describe('#build', () => {
     beforeEach(() => {
       builder = new XliffBuilder();
     });
@@ -196,6 +199,7 @@ describe('XliffBuilder', () => {
         `<?xml version="1.0"?><xliff version="1.0"><file source-language="en"><body/></file><file><body><trans-unit id="abcd"><source>test-content</source></trans-unit></body></file></xliff>`
       );
     });
+
     it('should use options given in input', () => {
       expect(
         new XliffBuilder({
@@ -277,6 +281,19 @@ describe('XliffBuilder', () => {
   </file>
 
  </xliff>`);
+    });
+
+    it('should rebuild the original file', () => {
+      builder = new XliffBuilder({
+        indent: '  ',
+        pretty: true,
+      });
+      expect(builder.build(XLIFF_JSON as any)).toEqual(
+        readFileSync(
+          resolve(__dirname, '../test-data/data.xlf'),
+          'utf-8'
+        ).trimEnd()
+      );
     });
   });
 });

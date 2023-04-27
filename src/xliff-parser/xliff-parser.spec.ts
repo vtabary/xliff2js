@@ -1,3 +1,6 @@
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+import { XLIFF_JSON } from '../test-data/data';
 import { XliffParser } from './xliff-parser';
 
 describe('XliffParser', () => {
@@ -31,7 +34,8 @@ describe('XliffParser', () => {
     });
 
     it('should parse a regular xliff', () => {
-      expect(parser.parse(`<xliff version="1.0">
+      expect(
+        parser.parse(`<xliff version="1.0">
   <file source-language="en">
     <body/>
   </file>
@@ -42,20 +46,21 @@ describe('XliffParser', () => {
       </trans-unit>
     </body>
   </file>
-</xliff>`)).toEqual({
+</xliff>`)
+      ).toEqual({
         name: 'xliff',
         children: [
           {
             name: 'file',
             $: {
-              "source-language": "en",
+              'source-language': 'en',
             },
             children: [
               {
                 name: 'body',
                 $: {},
                 children: [],
-              }
+              },
             ],
           },
           {
@@ -75,9 +80,7 @@ describe('XliffParser', () => {
                       {
                         name: 'source',
                         $: {},
-                        children: [
-                          'test-content',
-                        ],
+                        children: ['test-content'],
                       },
                     ],
                   },
@@ -87,13 +90,21 @@ describe('XliffParser', () => {
           },
         ],
         $: {
-          version: '1.0'
+          version: '1.0',
         },
       });
     });
 
     it('should throw when the xml is malformed', () => {
       expect(() => parser.parse('<xliff><file>content</xliff>')).toThrow();
+    });
+
+    it('should parse a real XLIFF file', () => {
+      expect(
+        parser.parse(
+          readFileSync(resolve(__dirname, '../test-data/data.xlf'), 'utf-8')
+        )
+      ).toEqual(XLIFF_JSON);
     });
   });
 });

@@ -1,8 +1,19 @@
-export type XliffTagName = 'x' | 'text' | 'target' | 'source' | 'note' | 'trans-unit' | 'body' | 'context' | 'context-group' | 'file' | 'xliff';
+export type XliffTagName =
+  | 'x'
+  | 'text'
+  | 'target'
+  | 'source'
+  | 'note'
+  | 'trans-unit'
+  | 'body'
+  | 'context'
+  | 'context-group'
+  | 'file'
+  | 'xliff';
 
 export interface IXliffTag {
   name: XliffTagName;
-  $: { [key:string]: string | undefined };
+  $: { [key: string]: string | undefined };
   children: (string | IXliffTag)[];
 }
 
@@ -11,7 +22,7 @@ export interface IXliffInterpolation extends IXliffTag {
   $: {
     'equiv-text'?: string;
     id?: 'INTERPOLATION';
-  }
+  };
 }
 
 export interface IXliffTarget extends IXliffTag {
@@ -19,7 +30,7 @@ export interface IXliffTarget extends IXliffTag {
   children: (string | IXliffInterpolation)[];
   $: {
     state?: 'translated';
-  }
+  };
 }
 
 export interface IXliffSource extends IXliffTag {
@@ -33,7 +44,7 @@ export interface IXliffNote extends IXliffTag {
   $: {
     from?: 'from';
     priority?: string;
-  }
+  };
 }
 
 export interface IXliffContext extends IXliffTag {
@@ -41,7 +52,7 @@ export interface IXliffContext extends IXliffTag {
   children: string[];
   $: {
     'context-type'?: 'sourcefile' | 'linenumber';
-  }
+  };
 }
 
 export interface IXliffContextGroup extends IXliffTag {
@@ -49,7 +60,7 @@ export interface IXliffContextGroup extends IXliffTag {
   children: IXliffContext[];
   $: {
     purpose?: 'location';
-  }
+  };
 }
 
 export interface IXliffTransUnit extends IXliffTag {
@@ -58,7 +69,7 @@ export interface IXliffTransUnit extends IXliffTag {
   $: {
     id: string;
     datatype?: string;
-  }
+  };
 }
 
 export interface IXliffBody extends IXliffTag {
@@ -66,9 +77,8 @@ export interface IXliffBody extends IXliffTag {
   children: IXliffTransUnit[];
 }
 
-
 export interface IXliffFile extends IXliffTag {
-  name: 'file',
+  name: 'file';
   children: IXliffBody[];
   $: {
     'source-language'?: string;
