@@ -1,18 +1,15 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file datatype="plaintext" original="ng2.template" source-language="en">
+  <file datatype="plaintext" original="ng2.template" source-language="en" target-language="fr">
     <body>
       <trans-unit datatype="html" id="history.recent-files">
-        <source>
-          Recent files (
-          <x equiv-text="{{ filePaths.length }}" id="INTERPOLATION"/>
-          items)
-        </source>
+        <source>Recent files (<x equiv-text="{{ filePaths.length }}" id="INTERPOLATION" /> items)</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/components/history/history.component.html</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note from="description" priority="1">Recent files title</note>
+        <target>Fichiers récents (<x equiv-text="{{ filePaths.length }}" id="INTERPOLATION" /> élément)</target>
       </trans-unit>
       <trans-unit datatype="html" id="history.empty-list">
         <source>No opened file yet</source>
@@ -21,6 +18,14 @@
           <context context-type="linenumber">12</context>
         </context-group>
         <note from="description" priority="1">Default label when no file is in the history</note>
+      </trans-unit>
+      <trans-unit datatype="html" id="sp-result-filters.sp-result">
+        <source>{VAR_PLURAL, plural, =0 {no result} =1 {<x id="INTERPOLATION" equiv-text="{{ test }}" /> result} other {<x id="INTERPOLATION" /> results}}</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">apps/ui/src/app/modules/documents/components/result-filters/result-filters.component.html</context>
+          <context context-type="linenumber">2,4</context>
+        </context-group>
+        <target>{VAR_PLURAL, plural, =0 {aucun élément} =1 {<x id="INTERPOLATION" equiv-text="{{ test }}" /> élément} other {<x id="INTERPOLATION" equiv-text="{{ test }}" /> éléments}}</target>
       </trans-unit>
     </body>
   </file>

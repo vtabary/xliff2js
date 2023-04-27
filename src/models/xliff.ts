@@ -9,12 +9,28 @@ export type XliffTagName =
   | 'context'
   | 'context-group'
   | 'file'
+  | 'plural'
   | 'xliff';
+
+export const TAG_NAMES: XliffTagName[] = [
+  'x',
+  'plural',
+  'text',
+  'target',
+  'source',
+  'note',
+  'trans-unit',
+  'body',
+  'context',
+  'context-group',
+  'file',
+  'xliff',
+];
 
 export interface IXliffTag {
   name: XliffTagName;
-  $: { [key: string]: string | undefined };
-  children: (string | IXliffTag)[];
+  $: { [key: string]: string };
+  children: (string | IXliffTag | IXliffPlural)[];
 }
 
 export interface IXliffInterpolation extends IXliffTag {
@@ -25,17 +41,22 @@ export interface IXliffInterpolation extends IXliffTag {
   };
 }
 
-export interface IXliffTarget extends IXliffTag {
-  name: 'target';
-  children: (string | IXliffInterpolation)[];
-  $: {
-    state?: 'translated';
+export interface IXliffPlural {
+  name: 'plural';
+  counters: {
+    [counter: string]: (string | IXliffPlural | IXliffInterpolation)[];
   };
 }
 
 export interface IXliffSource extends IXliffTag {
   name: 'source';
-  children: (string | IXliffInterpolation)[];
+  children: (string | IXliffInterpolation | IXliffPlural)[];
+}
+
+export interface IXliffTarget extends IXliffSource {
+  $: {
+    state?: 'translated';
+  };
 }
 
 export interface IXliffNote extends IXliffTag {

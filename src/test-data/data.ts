@@ -9,6 +9,7 @@ export const XLIFF_JSON = {
         datatype: 'plaintext',
         original: 'ng2.template',
         'source-language': 'en',
+        'target-language': 'fr',
       },
       children: [
         {
@@ -32,7 +33,7 @@ export const XLIFF_JSON = {
                       children: [],
                       name: 'x',
                     },
-                    'items)',
+                    ' items)',
                   ],
                   name: 'source',
                 },
@@ -67,6 +68,22 @@ export const XLIFF_JSON = {
                   },
                   children: ['Recent files title'],
                   name: 'note',
+                },
+                {
+                  $: {},
+                  children: [
+                    'Fichiers récents (',
+                    {
+                      $: {
+                        'equiv-text': '{{ filePaths.length }}',
+                        id: 'INTERPOLATION',
+                      },
+                      children: [],
+                      name: 'x',
+                    },
+                    ' élément)',
+                  ],
+                  name: 'target',
                 },
               ],
               name: 'trans-unit',
@@ -113,6 +130,106 @@ export const XLIFF_JSON = {
                   },
                   children: ['Default label when no file is in the history'],
                   name: 'note',
+                },
+              ],
+              name: 'trans-unit',
+            },
+            {
+              $: {
+                datatype: 'html',
+                id: 'sp-result-filters.sp-result',
+              },
+              children: [
+                {
+                  $: {},
+                  children: [
+                    {
+                      name: 'plural',
+                      counters: {
+                        '=0': ['no result'],
+                        '=1': [
+                          {
+                            $: {
+                              id: 'INTERPOLATION',
+                              'equiv-text': '{{ test }}',
+                            },
+                            children: [],
+                            name: 'x',
+                          },
+                          ' result',
+                        ],
+                        other: [
+                          {
+                            $: {
+                              id: 'INTERPOLATION',
+                            },
+                            children: [],
+                            name: 'x',
+                          },
+                          ' results',
+                        ],
+                      },
+                    },
+                  ],
+                  name: 'source',
+                },
+                {
+                  $: {
+                    purpose: 'location',
+                  },
+                  children: [
+                    {
+                      $: {
+                        'context-type': 'sourcefile',
+                      },
+                      children: [
+                        'apps/ui/src/app/modules/documents/components/result-filters/result-filters.component.html',
+                      ],
+                      name: 'context',
+                    },
+                    {
+                      $: {
+                        'context-type': 'linenumber',
+                      },
+                      children: ['2,4'],
+                      name: 'context',
+                    },
+                  ],
+                  name: 'context-group',
+                },
+                {
+                  $: {},
+                  name: 'target',
+                  children: [
+                    {
+                      name: 'plural',
+                      counters: {
+                        '=0': ['aucun élément'],
+                        '=1': [
+                          {
+                            $: {
+                              id: 'INTERPOLATION',
+                              'equiv-text': '{{ test }}',
+                            },
+                            children: [],
+                            name: 'x',
+                          },
+                          ' élément',
+                        ],
+                        other: [
+                          {
+                            $: {
+                              id: 'INTERPOLATION',
+                              'equiv-text': '{{ test }}',
+                            },
+                            children: [],
+                            name: 'x',
+                          },
+                          ' éléments',
+                        ],
+                      },
+                    },
+                  ],
                 },
               ],
               name: 'trans-unit',

@@ -42,7 +42,7 @@ describe('XliffParser', () => {
   <file>
     <body>
       <trans-unit id="abcd">
-        <source>test-content</source>
+        <source>before <x id="INTERPOLATION" /> after</source>
       </trans-unit>
     </body>
   </file>
@@ -80,7 +80,93 @@ describe('XliffParser', () => {
                       {
                         name: 'source',
                         $: {},
-                        children: ['test-content'],
+                        children: [
+                          'before ',
+                          {
+                            $: { id: 'INTERPOLATION' },
+                            children: [],
+                            name: 'x',
+                          },
+                          ' after',
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        $: {
+          version: '1.0',
+        },
+      });
+    });
+
+    it('should support a plural', () => {
+      expect(
+        parser.parse(`<xliff version="1.0">
+  <file source-language="en">
+    <body/>
+  </file>
+  <file>
+    <body>
+      <trans-unit id="abcd">
+        <source>before {VAR_PLURAL, plural, =0 {no item} other {<x id="INTERPOLATION" />}} after</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>`)
+      ).toEqual({
+        name: 'xliff',
+        children: [
+          {
+            name: 'file',
+            $: {
+              'source-language': 'en',
+            },
+            children: [
+              {
+                name: 'body',
+                $: {},
+                children: [],
+              },
+            ],
+          },
+          {
+            name: 'file',
+            $: {},
+            children: [
+              {
+                name: 'body',
+                $: {},
+                children: [
+                  {
+                    name: 'trans-unit',
+                    $: {
+                      id: 'abcd',
+                    },
+                    children: [
+                      {
+                        name: 'source',
+                        $: {},
+                        children: [
+                          'before ',
+                          {
+                            name: 'plural',
+                            counters: {
+                              '=0': ['no item'],
+                              other: [
+                                {
+                                  $: { id: 'INTERPOLATION' },
+                                  children: [],
+                                  name: 'x',
+                                },
+                              ],
+                            },
+                          },
+                          ' after',
+                        ],
                       },
                     ],
                   },

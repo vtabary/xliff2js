@@ -1,51 +1,132 @@
-import xmlBuilder from 'xmlbuilder';
-import { IXliffTag, IXliff } from '../models/xliff';
+import { XMLBuilder } from 'fast-xml-parser';
+import {
+  IXliffTag,
+  IXliff,
+  IXliffPlural,
+  IXliffSource,
+  IXliffTarget,
+  IXliffInterpolation,
+} from '../models/xliff';
+import { IXMLParserChild } from '../models/fast-xml-parser';
 
 export class XliffBuilder {
-  constructor(private options: xmlBuilder.XMLToStringOptions = {}) {}
+  private builder: XMLBuilder;
+
+  constructor(
+    private options: Partial<{
+      indent: string;
+      pretty: boolean;
+      allowEmpty: boolean;
+    }> = {}
+  ) {
+    this.builder = new XMLBuilder({
+      preserveOrder: true,
+      suppressEmptyNode: !this.options.allowEmpty,
+      format: this.options.pretty ?? false,
+      indentBy: this.options.indent ?? '  ',
+      suppressUnpairedNode: false,
+      ignoreAttributes: false,
+      attributeNamePrefix: '',
+    });
+  }
 
   public build(rootTag: IXliff | undefined): string {
     if (!rootTag) {
       return '';
     }
 
-    const element = xmlBuilder.create(rootTag.name);
-    Object.keys(rootTag.$).forEach((key) =>
-      element.attribute(key, (rootTag.$ as Record<string, unknown>)[key])
-    );
+    const built = this.serializeNode(rootTag);
 
-    rootTag.children.forEach((child) =>
-      this.buildChild(element, child as IXliffTag)
-    );
-
-    return element.end({
-      // fallback values are the default values
-      allowEmpty: this.options.allowEmpty ?? false,
-      dontPrettyTextNodes: this.options.dontPrettyTextNodes ?? false,
-      indent: this.options.indent ?? '  ',
-      newline: this.options.newline ?? '\n',
-      offset: this.options.offset ?? 0,
-      pretty: this.options.pretty ?? false,
-      spaceBeforeSlash: this.options.spaceBeforeSlash ?? '',
-      width: this.options.width ?? 0,
-      writer: this.options.writer,
-    });
+    return `<?xml version="1.0" encoding="UTF-8"?>
+${this.restoreInterpolations(built)}`;
   }
 
-  private buildChild(
-    parent: xmlBuilder.XMLElement,
-    tag: IXliffTag
-  ): xmlBuilder.XMLElement {
-    const element = parent.ele(tag.name, tag.$);
+  private convertNode(node: string | IXliffTag): IXMLParserChild {
+    if (typeof node === 'string' || typeof node === 'number') {
+      return { '#text': `${node}` };
+    }
 
-    tag.children.forEach((child) => {
-      if (typeof child === 'string' || typeof child === 'number') {
-        return element.text(child);
-      }
+    if (this.isSourceOrTarget(node)) {
+      return {
+        [node.name]: [{ '#text': this.convertSourceOrTargetNode(node) }],
+        ':@': node.$,
+      };
+    }
 
-      this.buildChild(element, child);
-    });
+    return {
+      // IXliffPlural can only occurs on Source or Target nodes
+      [node.name]: this.convertNodes(node.children as any),
+      ':@': node.$,
+    };
+  }
 
-    return element;
+  private isSourceOrTarget(
+    node: string | IXliffTag | IXliffPlural
+  ): node is IXliffSource | IXliffTarget {
+    return (
+      typeof node === 'object' &&
+      (node.name === 'source' || node.name === 'target')
+    );
+  }
+
+  private convertNodes(nodes: (string | IXliffTag)[] = []): IXMLParserChild[] {
+    return nodes.map((node) => this.convertNode(node));
+  }
+
+  private convertSourceOrTargetNode(node: IXliffSource | IXliffTarget): string {
+    return node.children
+      .map((child) => {
+        if (typeof child === 'string') {
+          return child;
+        }
+
+        if (this.isPlural(child)) {
+          return this.convertPlural(child as IXliffPlural);
+        }
+
+        return this.serializeNode(child);
+      })
+      .join('');
+  }
+
+  private convertPlural(node: IXliffPlural): string {
+    const options = Object.entries(node.counters)
+      .map(([key, values]) => {
+        return `${key} {${this.convertCounter(
+          values as (string | IXliffInterpolation)[]
+        )}}`;
+      })
+      .join(' ');
+
+    return `{VAR_PLURAL, plural, ${options}}`;
+  }
+
+  private isPlural(
+    node: string | IXliffTag | IXliffPlural
+  ): node is IXliffPlural {
+    return typeof node === 'object' && node.name === 'plural';
+  }
+
+  private convertCounter(nodes: (string | IXliffInterpolation)[]): string {
+    return nodes
+      .map((node) => {
+        if (typeof node === 'string') {
+          return node;
+        }
+
+        return this.serializeNode(node);
+      })
+      .join('');
+  }
+
+  private restoreInterpolations(xml: string): string {
+    return xml.replace(
+      /&lt;x(.*?)\/&gt;/gm,
+      (_, group1) => `<x${group1.replace(/&quot;/g, '"')} />`
+    );
+  }
+
+  private serializeNode(node: string | IXliffTag): string {
+    return this.builder.build([this.convertNode(node)]).trim();
   }
 }

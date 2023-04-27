@@ -28,7 +28,8 @@ describe('XliffBuilder', () => {
           children: [],
           $: {},
         })
-      ).toEqual('<?xml version="1.0"?><xliff/>');
+      ).toEqual(`<?xml version="1.0" encoding="UTF-8"?>
+<xliff/>`);
     });
 
     it('should build a regular xml', () => {
@@ -80,7 +81,8 @@ describe('XliffBuilder', () => {
           },
         })
       ).toEqual(
-        '<?xml version="1.0"?><xliff version="1.0"><file source-language="en"><body/></file><file><body><trans-unit id="abcd"><source>test-content</source></trans-unit></body></file></xliff>'
+        `<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0"><file source-language="en"><body/></file><file><body><trans-unit id="abcd"><source>test-content</source></trans-unit></body></file></xliff>`
       );
     });
 
@@ -132,7 +134,7 @@ describe('XliffBuilder', () => {
             version: '1.0',
           },
         })
-      ).toEqual(`<?xml version="1.0"?>
+      ).toEqual(`<?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
   <file source-language="en">
     <body/>
@@ -196,7 +198,8 @@ describe('XliffBuilder', () => {
           },
         })
       ).toEqual(
-        `<?xml version="1.0"?><xliff version="1.0"><file source-language="en"><body/></file><file><body><trans-unit id="abcd"><source>test-content</source></trans-unit></body></file></xliff>`
+        `<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0"><file source-language="en"><body/></file><file><body><trans-unit id="abcd"><source>test-content</source></trans-unit></body></file></xliff>`
       );
     });
 
@@ -256,31 +259,19 @@ describe('XliffBuilder', () => {
             version: '1.0',
           },
         })
-      ).toEqual(` <?xml version="1.0" ?>
-
- <xliff version="1.0">
-
-  <file source-language="en">
-
-   <body></body>
-
-  </file>
-
-  <file>
-
-   <body>
-
-    <trans-unit id="abcd">
-
-     <source>test-content</source>
-
-    </trans-unit>
-
-   </body>
-
-  </file>
-
- </xliff>`);
+      ).toEqual(`<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+ <file source-language="en">
+  <body></body>
+ </file>
+ <file>
+  <body>
+   <trans-unit id="abcd">
+    <source>test-content</source>
+   </trans-unit>
+  </body>
+ </file>
+</xliff>`);
     });
 
     it('should rebuild the original file', () => {
