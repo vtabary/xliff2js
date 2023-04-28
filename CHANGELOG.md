@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Export IXliffPlural interface in public api
+
 ## [0.5.1] - 2023-04-27
 
 ### Fixed

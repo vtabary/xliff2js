@@ -9,6 +9,7 @@ export {
   IXliffFile,
   IXliffInterpolation,
   IXliffNote,
+  IXliffPlural,
   IXliffSource,
   IXliffTarget,
   IXliffTransUnit,
