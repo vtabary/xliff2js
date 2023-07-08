@@ -98,7 +98,7 @@ ${this.restoreInterpolations(built)}`;
       })
       .join(' ');
 
-    return `{VAR_PLURAL, plural, ${options}}`;
+    return `{${node.key ?? 'VAR_PLURAL'}, plural, ${options}}`;
   }
 
   private isPlural(

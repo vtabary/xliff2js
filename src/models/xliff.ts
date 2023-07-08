@@ -43,6 +43,7 @@ export interface IXliffInterpolation extends IXliffTag {
 
 export interface IXliffPlural {
   name: 'plural';
+  key: string;
   counters: {
     [counter: string]: (string | IXliffPlural | IXliffInterpolation)[];
   };
