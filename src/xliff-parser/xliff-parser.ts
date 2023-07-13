@@ -112,10 +112,6 @@ export class XliffParser {
     }
 
     return this.parseICU(text);
-    // if (text.includes('VAR_PLURAL')) {
-    // }
-
-    // return this.parseInterpolation(text);
   }
 
   private parseICU(
@@ -152,6 +148,7 @@ export class XliffParser {
   ): IXliffPlural {
     // Get all the options
     return {
+      key: item.value,
       counters: Object.fromEntries(
         Object.entries(item.options).map(([key, value]) => [
           key,

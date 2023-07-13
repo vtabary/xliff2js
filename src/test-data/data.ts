@@ -145,6 +145,7 @@ export const XLIFF_JSON = {
                   children: [
                     {
                       name: 'plural',
+                      key: 'VAR_PLURAL',
                       counters: {
                         '=0': ['no result'],
                         '=1': [
@@ -203,6 +204,7 @@ export const XLIFF_JSON = {
                   children: [
                     {
                       name: 'plural',
+                      key: 'VAR_PLURAL',
                       counters: {
                         '=0': ['aucun élément'],
                         '=1': [

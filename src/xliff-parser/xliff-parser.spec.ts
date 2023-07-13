@@ -112,7 +112,7 @@ describe('XliffParser', () => {
   <file>
     <body>
       <trans-unit id="abcd">
-        <source>before {VAR_PLURAL, plural, =0 {no item} other {<x id="INTERPOLATION" />}} after</source>
+        <source>before {num_of_items, plural, =0 {no item} other {<x id="INTERPOLATION" />}} after</source>
       </trans-unit>
     </body>
   </file>
@@ -154,6 +154,7 @@ describe('XliffParser', () => {
                           'before ',
                           {
                             name: 'plural',
+                            key: 'num_of_items',
                             counters: {
                               '=0': ['no item'],
                               other: [
