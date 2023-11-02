@@ -175,6 +175,11 @@ export class XliffParser {
     return this.convertNodes(parsedInterpolation) as any;
   }
 
+  /**
+   * Interpolation entity can be the XML tag `<x id="INTERPOLATION" />`
+   * or the `#` character if it is not escaped with single quotes e.g `'#'`
+   * @see https://unicode-org.github.io/icu/userguide/format_parse/messages/#quotingescaping
+   */
   private protectInterpolations(text: string): {
     source: string;
     replaced: string;
@@ -184,7 +189,7 @@ export class XliffParser {
 
     return {
       source: text,
-      replaced: text.replace(/<x[^>]+>/g, (value) => {
+      replaced: text.replace(/(<x[^>]+>)|((?<!')#)/g, (value) => {
         const index = interpolations.length;
         interpolations.push(value);
         return `__${index}__`;

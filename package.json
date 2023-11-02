@@ -28,7 +28,7 @@
   "homepage": "https://github.com/vtabary/xliff2js",
   "license": "MIT",
   "dependencies": {
-    "@formatjs/icu-messageformat-parser": "^2.3.1",
+    "@formatjs/icu-messageformat-parser": "^2.7.0",
     "fast-xml-parser": "^4.2.2"
   },
   "devDependencies": {
