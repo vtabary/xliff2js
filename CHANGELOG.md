@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.6.1] - 2023-11-30
+
 ### Fixed
 
 - Support `#` character as interpolation string in addition to `<x id="INTERPOLATION" />` tag in ICU messages plural forms
